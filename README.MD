@@ -35,12 +35,14 @@ pip install -r requirements.txt
 export BITLY_TOKEN=<your token>
 ```
 
+
 Get the short link:
 ```
 python ./main.py http://llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch.co.uk
 
 Your shorten url: https://bit.ly/3Th2ZnH
 ```
+
 
 Get the number of clicks on your link:
 ```

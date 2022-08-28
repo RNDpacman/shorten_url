@@ -7,19 +7,6 @@ from urllib.parse import urlparse
 
 TOKEN = os.getenv('BITLY_TOKEN')
 
-
-def get_profile() -> dict:
-    '''
-    Возвращает данные вашего профиля
-    '''
-    api_url = 'https://api-ssl.bitly.com/v4/user'
-    headers = {'Authorization': TOKEN}
-    profile = requests.get(api_url, headers=headers)
-    profile.raise_for_status()
-
-    return profile.json()
-
-
 def get_shorten(long_url: str) -> str:
     '''
     Возвращает сокращенную версию long_url

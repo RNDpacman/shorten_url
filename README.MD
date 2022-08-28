@@ -28,13 +28,13 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-
-### Run
-
+Set your token:
 ```
 export BITLY_TOKEN=<your token>
 ```
 
+
+### Run
 
 Get the short link:
 ```

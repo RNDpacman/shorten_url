@@ -1,7 +1,6 @@
 import requests
 import os
 import argparse
-from pprint import pprint
 from urllib.parse import urlparse
 
 

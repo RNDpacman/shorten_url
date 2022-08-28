@@ -1,7 +1,6 @@
 import requests
 import os
 import argparse
-import sys
 from pprint import pprint
 from urllib.parse import urlparse
 
@@ -85,16 +84,16 @@ def main():
 
     if is_bitlink(args.url):
         try:
-            sum_of_clicks = get_clicks(args.url)
+            clicks = get_clicks(args.url)
         except requests.exceptions.HTTPError:
             print('Error: check url')
         else:
-            print('Total clicks:', sum_of_clicks)
+            print('Total clicks:', clicks)
     else:
         try:
             shorten_url = get_shorten(long_url=args.url)
         except requests.exceptions.HTTPError:
-            print('Error: Check your url', file=sys.stderr)
+            print('Error: Check your url')
         else:
             print('Your shorten url:', shorten_url)
 

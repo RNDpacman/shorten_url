@@ -1,6 +1,5 @@
 import requests
 import os
-import argparse
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 
@@ -17,15 +16,6 @@ def get_short(long_url: str, token) -> str:
 
     return shorten_url.json()['link']
 
-def get_parser():
-    '''
-    Парсит параметры командной строки и возвращает объект парсера
-    '''
-
-    parser = argparse.ArgumentParser(description='Get clicks bitlink or Shorten url')
-    parser.add_argument('url', help='Long url or Bitlink')
-
-    return parser.parse_args()
 
 def get_clicks(bitlink: str, token) -> int:
     '''
@@ -61,18 +51,19 @@ def main():
     else:
         raise Exception('You did not specify a token')
 
-    args = get_parser()
 
-    if is_bitlink(args.url, token=token):
+    url = input('Enter your url: ')
+
+    if is_bitlink(url, token=token):
         try:
-            clicks = get_clicks(args.url, token=token)
+            clicks = get_clicks(url, token=token)
         except requests.exceptions.HTTPError:
             print('Error: check url')
         else:
             print('Total clicks:', clicks)
     else:
         try:
-            short_url = get_short(long_url=args.url, token=token)
+            short_url = get_short(long_url=url, token=token)
         except requests.exceptions.HTTPError:
             print('Error: Check your url')
         else:

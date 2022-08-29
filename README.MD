@@ -1,6 +1,6 @@
 ### Description
 
-Скрипт сокращает ссылки при помощи сервиса [bitly.com](https://bitly.com)
+The script shortens links with the service [bitly.com](https://bitly.com)
 
 ### Install
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 Set your token:
 ```
-export BITLY_TOKEN=<your token>
+echo 'BITLY_TOKEN=<your token>' >> ./.env
 ```
 
 
@@ -38,7 +38,9 @@ export BITLY_TOKEN=<your token>
 
 Get the short link:
 ```
-python ./main.py http://llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch.co.uk
+python ./main.py
+
+Enter your url: http://llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch.co.uk
 
 Your shorten url: https://bit.ly/3Th2ZnH
 ```
@@ -46,25 +48,11 @@ Your shorten url: https://bit.ly/3Th2ZnH
 
 Get the number of clicks on your link:
 ```
-python ./main.py https://bit.ly/3Th2ZnH
-Total clicks: 1
+python ./main.py
+
+Enter your url: https://bit.ly/3Th2ZnH
+
+Total clicks: 2
 ```
 
-### Help
-
-```
-python ./main.py --help
-```
-
-```
-usage: main.py [-h] url
-
-Get clicks bitlink or Shorten url
-
-positional arguments:
-  url         Long url or Bitlink
-
-options:
-  -h, --help  show this help message and exit
-```
 

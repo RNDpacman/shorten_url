@@ -2,16 +2,15 @@ import requests
 import os
 import argparse
 from urllib.parse import urlparse
+from dotenv import load_dotenv
 
 
-TOKEN = os.getenv('BITLY_TOKEN')
-
-def get_shorten(long_url: str) -> str:
+def get_short(long_url: str, token) -> str:
     '''
     Возвращает сокращенную версию long_url
     '''
     api_url = 'https://api-ssl.bitly.com/v4/shorten'
-    headers = {'Authorization': TOKEN}
+    headers = {'Authorization': token}
     payload = {'long_url': long_url}
     shorten_url = requests.post(api_url, json=payload, headers=headers)
     shorten_url.raise_for_status()
@@ -28,60 +27,56 @@ def get_parser():
 
     return parser.parse_args()
 
-def get_clicks(bitlink: str, unit='day', units='-1'):
+def get_clicks(bitlink: str, token) -> int:
     '''
     Возвращает суммарное количество кликов для bitlink
     '''
 
     parsed_url = urlparse(bitlink)
     api_url = f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_url.netloc}{parsed_url.path}/clicks/summary'
-    headers = {'Authorization': TOKEN}
-    payload = {'unit': unit, 'units': units}
-    clicks = requests.get(api_url, params=payload, headers=headers)
+    headers = {'Authorization': token}
+    clicks = requests.get(api_url, headers=headers)
     clicks.raise_for_status()
 
     return clicks.json()['total_clicks']
 
 
-def is_bitlink(url: str) -> bool:
+def is_bitlink(url: str, token) -> bool:
     '''
     Является ли url корректным bitlink
     '''
 
-    headers = {'Authorization': TOKEN}
+    headers = {'Authorization': token}
     parsed_url = urlparse(url)
     api_url = f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_url.netloc}{parsed_url.path}'
     bitlink_info = requests.get(api_url, headers=headers)
 
-    try:
-        bitlink_info.raise_for_status()
-    except requests.exceptions.HTTPError:
-        return False
-    else:
-        return True
+    return bitlink_info.ok
 
 
 def main():
 
-    if not TOKEN:
-        raise Exception('token is empty')
+    if load_dotenv():
+        token = os.getenv('BITLY_TOKEN')
+    else:
+        raise Exception('You did not specify a token')
 
     args = get_parser()
 
-    if is_bitlink(args.url):
+    if is_bitlink(args.url, token=token):
         try:
-            clicks = get_clicks(args.url)
+            clicks = get_clicks(args.url, token=token)
         except requests.exceptions.HTTPError:
             print('Error: check url')
         else:
             print('Total clicks:', clicks)
     else:
         try:
-            shorten_url = get_shorten(long_url=args.url)
+            short_url = get_short(long_url=args.url, token=token)
         except requests.exceptions.HTTPError:
             print('Error: Check your url')
         else:
-            print('Your shorten url:', shorten_url)
+            print('Your shorten url:', short_url)
 
 
 if __name__ == '__main__':

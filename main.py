@@ -46,8 +46,10 @@ def is_bitlink(url: str, token) -> bool:
 
 def main():
 
-    if load_dotenv():
-        token = os.getenv('BITLY_TOKEN')
+    env_name = 'BITLY_TOKEN'
+
+    if load_dotenv() and os.getenv(env_name):
+        token = os.getenv(env_name)
     else:
         raise Exception('You did not specify a token')
 

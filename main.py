@@ -58,8 +58,8 @@ def main():
         else:
             short_url = get_short_url(long_url=url, token=token)
             print('Your shorten url:', short_url)
-    except requests.exceptions.HTTPError:
-        print('Error: Check your url')
+    except requests.exceptions.HTTPError as err:
+        print('Check the url and token are correct')
 
 
 if __name__ == '__main__':

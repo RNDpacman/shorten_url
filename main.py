@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 
-def get_short(long_url: str, token) -> str:
+def get_short_url(long_url: str, token) -> str:
     '''
     Возвращает сокращенную версию long_url
     '''
@@ -46,30 +46,20 @@ def is_bitlink(url: str, token) -> bool:
 
 def main():
 
-    env_name = 'BITLY_TOKEN'
-
-    if load_dotenv() and os.getenv(env_name):
-        token = os.getenv(env_name)
-    else:
-        raise Exception('You did not specify a token')
-
+    load_dotenv()
+    token = os.getenv('BITLY_TOKEN')
 
     url = input('Enter your url: ')
 
-    if is_bitlink(url, token=token):
-        try:
+    try:
+        if is_bitlink(url, token=token):
             clicks = get_clicks(url, token=token)
-        except requests.exceptions.HTTPError:
-            print('Error: check url')
-        else:
             print('Total clicks:', clicks)
-    else:
-        try:
-            short_url = get_short(long_url=url, token=token)
-        except requests.exceptions.HTTPError:
-            print('Error: Check your url')
         else:
+            short_url = get_short_url(long_url=url, token=token)
             print('Your shorten url:', short_url)
+    except requests.exceptions.HTTPError:
+        print('Error: Check your url')
 
 
 if __name__ == '__main__':
